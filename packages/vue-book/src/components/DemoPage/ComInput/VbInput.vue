@@ -15,6 +15,7 @@
 </template>
 
 <script lang="ts">
+import { nextTick } from 'vue'
 import { Vue, Options } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
 
@@ -37,16 +38,17 @@ export default class VbInput extends Vue {
   }
 
   get valueProxy () {
-    if (this.value !== this.temporaryValue) {
+    if (this.value && this.value !== this.temporaryValue) {
       this.temporaryValue = this.value
     }
     return this.temporaryValue
   }
 
   set valueProxy (value: string) {
+    // console.log('value',value)
     this.temporaryValue = value
-    this.$nextTick(() => {
-      if (this.value !== this.temporaryValue) {
+    nextTick(() => {
+      if (this.value && this.value !== this.temporaryValue) {
         this.temporaryValue = this.value
       }
     })
