@@ -10,9 +10,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 
-@Component({})
+@Options({
+  emits: ['input'],
+})
 export default class VueBookResizeLine extends Vue {
   startValue = 0
   startCoordinate = 0

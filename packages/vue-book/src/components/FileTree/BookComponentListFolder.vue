@@ -2,20 +2,20 @@
   <div class="BookComponentListFolder">
     <div class="BookComponentListFolder__header" @click="folder.toggle()">
       <div class="BookComponentListFolder__header__caret">
-        <font-awesome-icon
+        <!-- <font-awesome-icon
           v-if="folder.isOpen"
           icon="caret-down"
-        />
-        <font-awesome-icon
+        /> -->
+        <!-- <font-awesome-icon
           v-else
           icon="caret-right"
-        />
+        /> -->
       </div>
 
-      <font-awesome-icon
+      <!-- <font-awesome-icon
         class="BookComponentListFolder__header__icon"
         icon="folder"
-      />
+      /> -->
 
       <div class="BookComponentListFolder__title">
         <span>{{folder.name}}</span>
@@ -41,26 +41,28 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Prop } from 'vue-property-decorator'
 
 import BookComponentListItem from './BookComponentListItem.vue'
 
 import { TreeFolder } from '../../classes/Main/TreeFolder'
 import { ObjectHelpers } from 'asva-helpers'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { Options, Vue } from 'vue-class-component'
 
-@Component({
+@Options({
   components: {
     BookComponentListItem,
     FontAwesomeIcon,
   },
 })
 export default class BookComponentListFolder extends Vue {
-  @Prop({ type: TreeFolder, required: true }) folder!: TreeFolder
+  @Prop({ type: TreeFolder, required: true })
+  folder!: TreeFolder
 
   openSelected (): void {
     const foldersChain = ObjectHelpers
-      .traverseBranch(this.folder, { path: this.$route.path })
+      .traverseBranch(this.folder, { path: (this as any).$route.path })
       .filter(item => {
         return (item instanceof TreeFolder)
       })

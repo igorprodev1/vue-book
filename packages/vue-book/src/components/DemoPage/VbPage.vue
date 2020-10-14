@@ -4,7 +4,9 @@
       <p>You provided no files in requireContext.</p>
       <p>Please check your path and masks.</p>
     </div>
-    <div class="VbPage__left-block-folded" v-else-if="isHidden">
+    <div class="VbPage__left-block-folded"
+         v-else-if="isHidden"
+    >
       <ComButtonIcon
         @click="isHidden = !isHidden"
         :title="isHidden ? 'Unfold navigation panel' : 'Fold navigation panel'"
@@ -43,7 +45,7 @@
             class="VbPage__menu__search__icon"
             @click="clearSearch()"
           >
-            <font-awesome-icon icon="times"/>
+            <!-- <font-awesome-icon icon="times"/> -->
           </div>
         </form>
       </div>
@@ -115,9 +117,11 @@ import {
 } from './VueBookTreeOptions'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { ContainerFocusProvideMixin } from '../Exposed/ContainerFocusService'
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
+import { Prop, Watch } from 'vue-property-decorator'
 import { screenSizeService } from '../../services/ScreenSizeService'
 import ComButtonIcon from './ComButtonIcon/ComButtonIcon.vue'
+
+import { Vue, Options, mixins } from 'vue-class-component'
 
 let lastUpdateTimestamp = 0
 
@@ -139,7 +143,8 @@ const sortByRelevance = (searchText: string, treeFiles: TreeFile[]) => {
   })
 }
 
-@Component({
+@Options({
+  name: 'VbPage',
   components: {
     TreeDemoFileList,
     VbInput,
@@ -152,9 +157,6 @@ const sortByRelevance = (searchText: string, treeFiles: TreeFile[]) => {
     VbNotFound,
     ComButtonIcon,
   },
-  mixins: [
-    ContainerFocusProvideMixin,
-  ],
   // TODO Use decorators.
   provide () {
     return {
@@ -171,22 +173,27 @@ const sortByRelevance = (searchText: string, treeFiles: TreeFile[]) => {
     }
   },
 })
-export default class VbPage extends Vue {
-  @Prop({ type: TreeFolder, validator (treeFolder: TreeFolder): boolean {
+export default class VbPage extends mixins( ContainerFocusProvideMixin ) {
+  @Prop({
+    type: TreeFolder,
+    validator (treeFolder: TreeFolder): boolean {
       if (!(treeFolder instanceof TreeFolder)) {
         throw new Error('No treeFolder found: pass it to props or provide via route meta')
       }
       return true
-    }
+    },
   }) treeFolder!: TreeFolder
+
   @Prop({
-    type: TreeFileCollection, validator (treeFileCollection: any): boolean {
+    type: TreeFileCollection,
+    validator (treeFileCollection: any): boolean {
       if (!(treeFileCollection instanceof TreeFileCollection)) {
         throw new Error('No treeFileCollection found: pass it to props or provide via route meta')
       }
       return true
     },
   }) treeFileCollection!: TreeFileCollection
+
   @Prop({ type: Boolean }) hideFileExtensions!: boolean
   @Prop({ type: Boolean }) hideNavigation!: boolean
 
@@ -200,19 +207,27 @@ export default class VbPage extends Vue {
     hideFileExtensions: this.hideFileExtensions,
   })
 
+  beforeCreate () {
+    console.log('VbPage beforeCreate')
+    console.log('VbPage beforeCreate TreeFolder', this.treeFolder)
+    this.foldersStoreInstance.load()
+    this.configStore.load()
+    // const treeFolder = this.treeFolder
+    const treeFolder = this.treeFolder
+    treeFolder.mergeWithFolders(this.foldersStoreInstance.openFolders)
+    this.treeFolderLocal = treeFolder
+  }
+
   mounted () {
     const input = this.$refs.searchInput as any
     input && (input.$el as HTMLInputElement).focus()
   }
 
-  constructor () {
-    super()
-    this.foldersStoreInstance.load()
-    this.configStore.load()
-    const treeFolder = this.treeFolder
-    treeFolder.mergeWithFolders(this.foldersStoreInstance.openFolders)
-    this.treeFolderLocal = treeFolder
-  }
+  // constructor () {
+  //   super()
+  //   // eslint-disable-next-line no-console
+
+  // }
 
   @Watch('isMobile')
   onIsMobileChange (isMobile: boolean) {
@@ -270,7 +285,7 @@ export default class VbPage extends Vue {
 
   get currentFile (): TreeFile | null {
     return this.files.find((file: any) => {
-      return this.$route.path === file.path
+      return (this as any).$route.path === file.path
     }) || null
   }
 
@@ -287,7 +302,7 @@ export default class VbPage extends Vue {
   }
 
   get currentComponentName (): string | undefined {
-    return this.$route.path.split('/').pop()
+    return (this as any).$route.path.split('/').pop()
   }
 
   get similarFiles (): TreeFile[] {
@@ -361,7 +376,8 @@ export default class VbPage extends Vue {
       return
     }
 
-    this.$router?.push(fileUnderCursor.path)
+    // eslint-disable-next-line no-unused-expressions
+    (this as any).$router?.push(fileUnderCursor.path)
   }
 }
 </script>

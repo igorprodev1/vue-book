@@ -15,10 +15,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 
-@Component({
+@Options({
   name: 'VbInput',
+  emits: ['input', 'focus', 'blur', 'up', 'down', 'enter'],
 })
 export default class VbInput extends Vue {
   // TODO Check if that default: 'default' is truly needed

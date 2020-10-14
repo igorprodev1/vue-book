@@ -1,6 +1,11 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
+import { VueBookComponents } from '../src/app'
 import App from './App.vue'
+import router from './routes'
 
-Vue.config.productionTip = false
+const app = createApp(App)
 
-new Vue(App).$mount('#app')
+app.use(VueBookComponents)
+app.use(router)
+// Vue.config.productionTip = false
+app.mount('#app')
