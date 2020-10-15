@@ -2,9 +2,9 @@
   <div
     class="ComButtonIcon"
     :class="{'ComButtonIcon--active': active}"
-    v-on="$listeners"
   >
-    <!-- <font-awesome-icon :icon="icon" /> -->
+    <!-- v-on="$listeners" -->
+    <!-- <font-awesome-icon icon="server" /> -->
   </div>
 </template>
 

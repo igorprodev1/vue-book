@@ -45,7 +45,6 @@ export default class VbInput extends Vue {
   }
 
   set valueProxy (value: string) {
-    // console.log('value',value)
     this.temporaryValue = value
     nextTick(() => {
       if (this.value && this.value !== this.temporaryValue) {

@@ -24,7 +24,7 @@ import { Vue, Options } from 'vue-class-component'
   components: {
     BookComponentListItem,
   },
-  emits: ['selecte'],
+  emits: ['selected'],
 })
 export default class DemoFileList extends Vue {
   @Prop({ type: ListCursor, required: true }) listCursor!: ListCursor

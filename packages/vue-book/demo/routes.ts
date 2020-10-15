@@ -1,10 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 
 import { createComponent, createRoute, VueBookComponents } from '../src/app'
 import SeveralInstances from './SeveralInstances.vue'
 
 const routes = [
-  // An assortment of components.
   createRoute({
     requireContext: require.context('./tree', true, /.vue$/),
     path: '/demo',
@@ -13,7 +12,7 @@ const routes = [
   }),
   // vue-book component mode testing
   {
-    path: '/component-mode/*',
+    path: '/component-mode/:pathMatch(.*)*',
     component: createComponent({
       path: '/component-mode',
       requireContext: require.context('./tree', true, /.vue$/),
@@ -38,19 +37,14 @@ const routes = [
     hideFileExtensions: true,
   }),
   {
-    path: '/*',
+    path: '/:pathMatch(.*)*',
     redirect: '/demo',
   },
 ]
 
-console.log('routes', routes)
-
 const router = createRouter({
-  history: createWebHistory(),
-  routes: [{
-    path: '/',
-    component: SeveralInstances,
-  }],
+  history: createWebHashHistory(),
+  routes,
 })
 
 export default router

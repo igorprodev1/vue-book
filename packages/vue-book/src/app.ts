@@ -9,7 +9,6 @@ const loremString = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, se
 export const VueBookComponents = {
   install: (app: any) => {
     // Register global components
-    console.log('install')
     app.component('VbDemo', VbDemo)
     app.component('VbCard', VbCard)
     app.component('VbPage', VbPage)

@@ -208,11 +208,8 @@ export default class VbPage extends mixins( ContainerFocusProvideMixin ) {
   })
 
   beforeCreate () {
-    console.log('VbPage beforeCreate')
-    console.log('VbPage beforeCreate TreeFolder', this.treeFolder)
     this.foldersStoreInstance.load()
     this.configStore.load()
-    // const treeFolder = this.treeFolder
     const treeFolder = this.treeFolder
     treeFolder.mergeWithFolders(this.foldersStoreInstance.openFolders)
     this.treeFolderLocal = treeFolder
@@ -222,12 +219,6 @@ export default class VbPage extends mixins( ContainerFocusProvideMixin ) {
     const input = this.$refs.searchInput as any
     input && (input.$el as HTMLInputElement).focus()
   }
-
-  // constructor () {
-  //   super()
-  //   // eslint-disable-next-line no-console
-
-  // }
 
   @Watch('isMobile')
   onIsMobileChange (isMobile: boolean) {

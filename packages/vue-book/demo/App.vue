@@ -1,6 +1,5 @@
 <template>
   <div class="App">
-    <!-- <VbPage></VbPage> -->
     <router-view />
   </div>
 </template>

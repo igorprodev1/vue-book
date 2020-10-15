@@ -1,6 +1,5 @@
 <template>
   <div class="SeveralInstances">
-    <h3>SeveralInstances</h3>
     <vue-book />
     <vue-book />
   </div>

@@ -28,14 +28,13 @@ export const createVueBookComponent = (config: Partial<VueBookConfig>) => {
   class VbPageWrapper extends Vue {
     render () {
       return h(
-        resolveDynamicComponent('VbPage') as any,
+        resolveComponent('VbPage') as any,
         {
           treeFolder: TreeFolder.createFromDemoFileCollection(treeFileCollection),
           treeFileCollection: treeFileCollection,
           hideFileExtensions: configFull.hideFileExtensions,
           hideNavigation: configFull.hideNavigation,
         },
-        'op',
       )
     }
   }
@@ -45,13 +44,8 @@ export const createVueBookComponent = (config: Partial<VueBookConfig>) => {
 
 export const createVueBookRoute = (config: Partial<VueBookConfig>): RouteRecordRaw => {
   const configFull = new VueBookConfig(config)
-  console.log({
-    path: configFull.path,
-    component: createVueBookComponent(configFull),
-  })
   return {
-    // path: configFull.path + '*',
-    path: configFull.path + '',
+    path: configFull.path + ':pathMatch(.*)*',
     component: createVueBookComponent(configFull),
   }
 }
